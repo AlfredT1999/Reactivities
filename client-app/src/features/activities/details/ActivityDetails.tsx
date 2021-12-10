@@ -1,29 +1,37 @@
 import { Button, Card, Image } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { useStore } from "../../../app/stores/store";
 
-interface Props {
-    activities: Activity;
-    cancelSelectActivity: () => void;
-    handleFormOpen: (id: string) => void;
-}
+export default function ActivityDetails() {
+    const {activityStore} = useStore();
+    const {selectedActivity: activity, openForm, cancelSelectActivity} = activityStore;
 
-export default function ActivityDetails({activities, cancelSelectActivity, handleFormOpen }: Props) {
+    if(!activity) return <LoadingComponent />;
+    
     return (
         <Card fluid>
-            <Image src={`/assets/categoryImages/${activities.category}.jpg`} />
+            <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
             <Card.Content>
-            <Card.Header>{activities.title}</Card.Header>
+            <Card.Header>{activity.title}</Card.Header>
             <Card.Meta>
-                <span className='date'>{activities.date}</span>
+                <span className='date'>{activity.date}</span>
             </Card.Meta>
             <Card.Description>
-                {activities.description}
+                {activity.description}
             </Card.Description>
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button onClick={() => handleFormOpen(activities.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectActivity} basic color='grey' content='Cancel' />
+                    <Button 
+                        onClick={() => openForm(activity.id)} 
+                        basic color='blue' 
+                        content='Edit' 
+                    />
+                    <Button 
+                        onClick={cancelSelectActivity} 
+                        basic color='grey' 
+                        content='Cancel' 
+                    />
                 </Button.Group>
             </Card.Content>
         </Card>
