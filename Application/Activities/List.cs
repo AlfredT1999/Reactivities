@@ -6,26 +6,33 @@ using Domain;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Application.Core;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace Application.Activities
 {
     public class List
     {
-        public class Query : IRequest<Result<List<Activity>>> { }
+        public class Query : IRequest<Result<List<ActivityDto>>> { }
 
-        public class Handler : IRequestHandler<Query, Result<List<Activity>>>
+        public class Handler : IRequestHandler<Query, Result<List<ActivityDto>>>
         {
             public DataContext _context { get; }
+            private readonly IMapper mapper;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IMapper mapper)
             {
+                this.mapper = mapper;
                 _context = context;
             }
 
-            public async Task<Result<List<Activity>>> Handle(Query request, 
-                CancellationToken cancellationToken)
+            public async Task<Result<List<ActivityDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<List<Activity>>.Success(await _context.Activities.ToListAsync(cancellationToken));
+                var activities = await _context.Activities
+                    .ProjectTo<ActivityDto>(this.mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken);
+
+                return Result<List<ActivityDto>>.Success(activities);
             }
         }
     }
