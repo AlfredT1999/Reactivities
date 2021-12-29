@@ -46,6 +46,8 @@ namespace API
                 config.RegisterValidatorsFromAssemblyContaining<Create>();
             });
             services.AddApplicationServices(_config);
+
+            // Changed from AddIdentityService to AddIdentityServices, commit End of section 15 fixed:
             services.AddIdentityServices(_config);
         }
 

@@ -33,8 +33,8 @@ namespace API.Extensions
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = key,
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateIssuer = false,// This line added commit end of section 15 fixed.
+                        ValidateAudience = false// This line added commit end of section 15 fixed.
                     };
                 });
 

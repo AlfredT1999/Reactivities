@@ -4,6 +4,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
+      "_comment": "port number changed in the localhost as well as sslPort below, commit end of section 15 fixed",
       "applicationUrl": "http://localhost:11732",
       "sslPort": 44322
     }
@@ -11,6 +12,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+      "_comment": "LaunchBrowser changed to true, commit end of section 15 fixed",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
@@ -20,6 +22,7 @@
     "API": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
+      "_comment": "LaunchBrowser changed to false, commit end of section 15 fixed",
       "launchBrowser": false,
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5000",
