@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { Container } from 'semantic-ui-react';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
@@ -12,39 +13,34 @@ import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
 import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
-import { useEffect } from 'react';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
 
-function App() 
-{
+function App() {
   const location = useLocation();
   const {commonStore, userStore} = useStore();
 
   useEffect(() => {
-    if(commonStore.token)
-    {
+    if (commonStore.token) {
       userStore.getUser().finally(() => commonStore.setAppLoaded());
-    }
-    else
-    {
+    } else {
       commonStore.setAppLoaded();
     }
-  }, [commonStore, userStore]);
+  }, [commonStore, userStore])
 
-  if(!commonStore.appLoaded) return <LoadingComponent content="Loading app..." />
-  
+  if (!commonStore.appLoaded) return <LoadingComponent content='Loading app...' />
+
   return (
     <>
-      <ToastContainer position='bottom-right' hideProgressBar />  
+      <ToastContainer position='bottom-right' hideProgressBar />
       <ModalContainer />
       <Route exact path='/' component={HomePage} />
-      <Route 
+      <Route
         path={'/(.+)'}
         render={() => (
           <>
-            <NavBar  />
-            <Container style={{marginTop: '7em'}}>
+            <NavBar />
+            <Container style={{ marginTop: '7em' }}>
               <Switch>
                 <Route exact path='/activities' component={ActivityDashboard} />
                 <Route path='/activities/:id' component={ActivityDetails} />
@@ -54,7 +50,7 @@ function App()
                 <Route path='/login' component={LoginForm} />
                 <Route component={NotFound} />
               </Switch>
-            </Container>  
+            </Container>
           </>
         )}
       />

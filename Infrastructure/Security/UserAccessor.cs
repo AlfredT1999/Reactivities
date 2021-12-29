@@ -6,16 +6,15 @@ namespace Infrastructure.Security
 {
     public class UserAccessor : IUserAccessor
     {
-        private readonly IHttpContextAccessor httpContextAccessor;
-
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public UserAccessor(IHttpContextAccessor httpContextAccessor)
         {
-            this.httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public string GetUsername()
         {
-            return this.httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
         }
     }
 }

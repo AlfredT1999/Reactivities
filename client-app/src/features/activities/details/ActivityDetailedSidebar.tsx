@@ -1,18 +1,15 @@
+import React from 'react'
 import { Segment, List, Label, Item, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { Activity } from '../../../app/models/activity'
 
-interface Props
-{
+interface Props {
     activity: Activity;
 }
 
-export default observer(function ActivityDetailedSidebar ({activity: {attendees, host}}: Props) 
-{
-    // If we don't have any attendees then:
-    if(!attendees) return null;
-
+export default observer(function ActivityDetailedSidebar({ activity: { attendees, host } }: Props) {
+    if (!attendees) return null;
     return (
         <>
             <Segment
@@ -27,28 +24,26 @@ export default observer(function ActivityDetailedSidebar ({activity: {attendees,
             </Segment>
             <Segment attached>
                 <List relaxed divided>
-                    {attendees.map((attendee) => (
+                    {attendees.map(attendee => (
                         <Item style={{ position: 'relative' }} key={attendee.username}>
-                            {attendee.username === host?.username && (
+                            {attendee.username === host?.username &&
                                 <Label
                                     style={{ position: 'absolute' }}
                                     color='orange'
                                     ribbon='right'
                                 >
                                     Host
-                                </Label>
-                            )}
+                                </Label>}
                             <Image size='tiny' src={attendee.image || '/assets/user.png'} />
                             <Item.Content verticalAlign='middle'>
                                 <Item.Header as='h3'>
-                                    <Link to={`/profiles/${attendee.username}`}>
-                                        {attendee.displayName}
-                                    </Link>
+                                    <Link to={`/profiles/${attendee.username}`}>{attendee.displayName}</Link>
                                 </Item.Header>
                                 <Item.Extra style={{ color: 'orange' }}>Following</Item.Extra>
                             </Item.Content>
                         </Item>
                     ))}
+
                 </List>
             </Segment>
         </>

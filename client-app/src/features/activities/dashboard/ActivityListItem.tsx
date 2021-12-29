@@ -1,40 +1,30 @@
-import { Link } from "react-router-dom";
-import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
-import { format } from "date-fns";
-import ActivityListItemAttendee from "./ActivityListItemAttendee";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
+import { Activity } from '../../../app/models/activity';
+import {format} from 'date-fns';
+import ActivityListItemAttendee from './ActivityListItemAttendee';
 
-interface Props{
+interface Props {
     activity: Activity
 }
 
-export default function ActivityListItem({activity}: Props) 
-{
+export default function ActivityListItem({ activity }: Props) {
+
     return (
         <Segment.Group>
             <Segment>
-                {activity.isCancelled && (
-                    <Label 
-                        attached='top'
-                        color='red'
-                        content='Cancelled'
-                        style={{textAlign: 'center'}}
-                    />
-                )}
+                {activity.isCancelled &&
+                    <Label attached='top' color='red' content='Cancelled' style={{textAlign: 'center'}} />
+                }
                 <Item.Group>
                     <Item>
                         <Item.Image style={{marginBottom: 3}} size='tiny' circular src='/assets/user.png' />
-                    </Item>
-                    <Item.Content>
-                        <Item.Header as={Link} to={`/activities/${activity.id}`}>
-                            {activity.title}
-                        </Item.Header>
-                        <Item.Description>
-                            Hosted by {activity.host?.displayName}
-                        </Item.Description>
-                    </Item.Content>
-                    <Item>
                         <Item.Content>
+                            <Item.Header as={Link} to={`/activities/${activity.id}`}>
+                                {activity.title}
+                            </Item.Header>
+                            <Item.Description>Hosted by {activity.host?.displayName}</Item.Description>
                             {activity.isHost && (
                                 <Item.Description>
                                     <Label basic color='orange'>
@@ -42,7 +32,6 @@ export default function ActivityListItem({activity}: Props)
                                     </Label>
                                 </Item.Description>
                             )}
-
                             {activity.isGoing && !activity.isHost && (
                                 <Item.Description>
                                     <Label basic color='green'>
@@ -74,5 +63,5 @@ export default function ActivityListItem({activity}: Props)
                 />
             </Segment>
         </Segment.Group>
-    );
+    )
 }

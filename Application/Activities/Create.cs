@@ -17,8 +17,6 @@ namespace Application.Activities
             public Activity Activity { get; set; }
         }
 
-        // FluentValidation Package works as a middleware between our Command and Handler classes
-        // to validate that the info is correct.
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
@@ -29,32 +27,31 @@ namespace Application.Activities
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext context;
-            private readonly IUserAccessor userAccessor;
-
+            private readonly DataContext _context;
+            private readonly IUserAccessor _userAccessor;
             public Handler(DataContext context, IUserAccessor userAccessor)
             {
-                this.userAccessor = userAccessor;
-                this.context = context;
+                _userAccessor = userAccessor;
+                _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                // Get the user from the database that matches with our user userAccessor:
-                var user = await this.context.Users.FirstOrDefaultAsync(x => 
-                    x.UserName == this.userAccessor.GetUsername());
+                var user = await _context.Users.FirstOrDefaultAsync(x => 
+                    x.UserName == _userAccessor.GetUsername());
 
                 var attendee = new ActivityAttendee
                 {
                     AppUser = user,
-                    Activity = request.Activity, 
+                    Activity = request.Activity,
                     IsHost = true
                 };
 
                 request.Activity.Attendees.Add(attendee);
 
-                this.context.Activities.Add(request.Activity);
-                var result = await this.context.SaveChangesAsync() > 0;
+                _context.Activities.Add(request.Activity);
+
+                var result = await _context.SaveChangesAsync() > 0;
 
                 if (!result) return Result<Unit>.Failure("Failed to create activity");
 

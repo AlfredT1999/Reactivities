@@ -5,7 +5,6 @@ namespace Domain
 {
     public class Activity
     {
-        // Guid means that the id is not generated automatically by the database.
         public Guid Id { get; set; }
         public string Title { get; set; }
         public DateTime Date { get; set; }

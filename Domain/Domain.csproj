@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

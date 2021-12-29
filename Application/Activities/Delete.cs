@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
-using AutoMapper;
 using MediatR;
 using Persistence;
 
@@ -17,26 +16,23 @@ namespace Application.Activities
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext context;
-            private readonly IMapper mapper;
-
-            public Handler(DataContext context, IMapper mapper)
+            private readonly DataContext _context;
+            public Handler(DataContext context)
             {
-                this.mapper = mapper;
-                this.context = context;
+                _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await this.context.Activities.FindAsync(request.Id);
-                
-                if(activity == null) return null;
+                var activity = await _context.Activities.FindAsync(request.Id);
 
-                this.context.Remove(activity);
+                // if (activity == null) return null;
 
-                var result = await this.context.SaveChangesAsync() > 0;
+                _context.Remove(activity);
 
-                if(!result) return Result<Unit>.Failure("Failed to delete the activity");
+                var result = await _context.SaveChangesAsync() > 0;
+
+                if (!result) return Result<Unit>.Failure("Failed to delete the activity");
 
                 return Result<Unit>.Success(Unit.Value);
             }

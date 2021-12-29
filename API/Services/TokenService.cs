@@ -11,11 +11,10 @@ namespace API.Services
 {
     public class TokenService
     {
-        private readonly IConfiguration config;
-
+        private readonly IConfiguration _config;
         public TokenService(IConfiguration config)
         {
-            this.config = config;
+            _config = config;
         }
 
         public string CreateToken(AppUser user)
@@ -27,13 +26,13 @@ namespace API.Services
                 new Claim(ClaimTypes.Email, user.Email),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config["TokenKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(10),
+                Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = creds
             };
 

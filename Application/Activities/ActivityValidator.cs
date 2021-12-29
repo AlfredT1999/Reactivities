@@ -7,7 +7,7 @@ namespace Application.Activities
     {
         public ActivityValidator()
         {
-            RuleFor(x => x.Title).NotEmpty();// The title couldn't be empty.
+            RuleFor(x => x.Title).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Date).NotEmpty();
             RuleFor(x => x.Category).NotEmpty();
