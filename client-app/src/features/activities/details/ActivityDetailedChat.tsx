@@ -36,7 +36,7 @@ export default observer(function ActivityDetailedChat({ activityId }: Props)
                 attached='top'
                 inverted
                 color='teal'
-                style={{border: 'none'}}
+                style={{ border: 'none' }}
             >
                 <Header>Chat about this event</Header>
             </Segment>

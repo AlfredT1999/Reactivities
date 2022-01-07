@@ -11,7 +11,7 @@ namespace Application.Comments
 
         // These 3 properties needs to be mapped because they are not directly accessible from our Comment entity.
         public string Username { get; set; }
-        public int DisplayName { get; set; }
-        public int Image { get; set; }
+        public string DisplayName { get; set; }
+        public string Image { get; set; }
     }
 }

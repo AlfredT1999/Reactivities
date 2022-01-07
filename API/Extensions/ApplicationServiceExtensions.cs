@@ -35,7 +35,7 @@ namespace API.Extensions
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()
-                        .WithOrigins(new string[] {"http://localhost:3000", "test"});// We add new string[]{} commit End of section 15 fixed.
+                        .WithOrigins("http://localhost:3000");
                 });
             });
 
