@@ -21,20 +21,20 @@ namespace Application.Comments
 
         public class Handler : IRequestHandler<Query, Result<List<CommentDto>>>
         {
-            private readonly DataContext context;
-            private readonly IMapper mapper;
-
+            private readonly DataContext _context;
+            private readonly IMapper _mapper;
             public Handler(DataContext context, IMapper mapper)
             {
-                this.mapper = mapper;
-                this.context = context;
+                _mapper = mapper;
+                _context = context;
             }
 
             public async Task<Result<List<CommentDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var comments = await this.context.Comments.Where(q => q.Activity.Id == request.ActivityId)
+                var comments = await _context.Comments
+                    .Where(x => x.Activity.Id == request.ActivityId)
                     .OrderByDescending(x => x.CreatedAt)
-                    .ProjectTo<CommentDto>(this.mapper.ConfigurationProvider)
+                    .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
                 return Result<List<CommentDto>>.Success(comments);

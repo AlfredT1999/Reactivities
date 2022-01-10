@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.Interfaces;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -27,32 +28,27 @@ namespace Application.Profiles
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext context;
-            private readonly IUserAccessor userAccessor;
-
+            private readonly DataContext _context;
+            private readonly IUserAccessor _userAccessor;
             public Handler(DataContext context, IUserAccessor userAccessor)
             {
-                this.userAccessor = userAccessor;
-                this.context = context;
+                _userAccessor = userAccessor;
+                _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await this.context.Users
-                    .FirstOrDefaultAsync(x => x.UserName == this.userAccessor.GetUsername());
-
-                if(user == null) return null;
-
+                var user = await _context.Users.FirstOrDefaultAsync(x => 
+                    x.UserName == _userAccessor.GetUsername());
+                
+                user.Bio = request.Bio ?? user.Bio;
                 user.DisplayName = request.DisplayName ?? user.DisplayName;
 
-                // Another way to write the above code is:
-                user.Bio = user.Bio != null ? request.Bio : user.Bio;
+                _context.Entry(user).State = EntityState.Modified;
 
-                this.context.Entry(user).State = EntityState.Modified;
+                var success = await _context.SaveChangesAsync() > 0;
 
-                var success = await this.context.SaveChangesAsync() > 0;
-
-                if(success) return Result<Unit>.Success(Unit.Value);
+                if (success) return Result<Unit>.Success(Unit.Value);
 
                 return Result<Unit>.Failure("Problem updating profile");
             }

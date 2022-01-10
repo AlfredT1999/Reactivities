@@ -34,22 +34,19 @@ namespace API.Extensions
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = key,
-                        ValidateIssuer = false,// This line added commit end of section 15 fixed.
-                        ValidateAudience = false// This line added commit end of section 15 fixed.
+                        ValidateIssuer = false,
+                        ValidateAudience = false
                     };
-                    
                     opt.Events = new JwtBearerEvents
                     {
-                        OnMessageReceived = context =>
+                        OnMessageReceived = context => 
                         {
                             var accessToken = context.Request.Query["access_token"];
                             var path = context.HttpContext.Request.Path;
-
-                            if(!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
+                            if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
                             {
                                 context.Token = accessToken;
                             }
-
                             return Task.CompletedTask;
                         }
                     };

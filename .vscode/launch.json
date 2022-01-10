@@ -30,8 +30,6 @@
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",
-
-            // Putting this line for commit End of section 15 fixed:
             "processId": "${command:pickProcess}"
         }
     ]
